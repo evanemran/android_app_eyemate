@@ -6,12 +6,10 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.SurfaceView;
-import android.view.View;
 import android.widget.Toast;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
-import org.opencv.android.JavaCamera2View;
 import org.opencv.android.JavaCameraView;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Core;
@@ -33,9 +31,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements CameraBridgeViewBase.CvCameraViewListener2 {
-
-
+public class ObjectsActivity extends AppCompatActivity implements CameraBridgeViewBase.CvCameraViewListener2 {
     CameraBridgeViewBase cameraBridgeViewBase;
     BaseLoaderCallback baseLoaderCallback;
     boolean startYolo = false;
@@ -49,100 +45,10 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
     Net tinyYolo;
     Net detector;
 
-
-    public void YOLO(View Button){
-
-        if (startYolo == false){
-
-
-
-
-            startYolo = true;
-
-            if (firstTimeYolo == false){
-
-
-                firstTimeYolo = true;
-                String tinyYoloCfg = Environment.getExternalStorageDirectory() + "/dnns/yolov3-tiny.cfg" ;
-                String tinyYoloWeights = Environment.getExternalStorageDirectory() + "/dnns/yolov3-tiny.weights";
-
-                tinyYolo = Dnn.readNetFromDarknet(tinyYoloCfg, tinyYoloWeights);
-
-
-
-
-
-
-
-
-
-            }
-
-
-
-        }
-
-        else{
-
-            startYolo = false;
-
-
-        }
-
-
-
-
-    }
-
-
-
-
-    public void Faces(View Button){
-
-        if (startFaces == false){
-
-
-
-
-            startFaces = true;
-
-            if (firstTimeFaces == false){
-
-
-                firstTimeFaces = true;
-                String protoPath = Environment.getExternalStorageDirectory() + "/dnns/deploy.prototxt" ;
-                String caffeWeights = Environment.getExternalStorageDirectory() + "/dnns/res10_300x300_ssd_iter_140000.caffemodel";
-
-                detector = Dnn.readNetFromCaffe(protoPath, caffeWeights);
-
-
-            }
-
-
-
-        }
-
-        else{
-
-            startFaces = false;
-
-
-        }
-
-
-
-
-    }
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-
+        setContentView(R.layout.activity_objects);
         cameraBridgeViewBase = (JavaCameraView)findViewById(R.id.CameraView);
         cameraBridgeViewBase.setVisibility(SurfaceView.VISIBLE);
         cameraBridgeViewBase.setCvCameraViewListener(this);
@@ -168,18 +74,12 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
             }
 
         };
-
-
-
-
     }
 
     @Override
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
 
         Mat frame = inputFrame.rgba();
-
-        if (startYolo == true) {
 
             Imgproc.cvtColor(frame, frame, Imgproc.COLOR_RGBA2RGB);
 
@@ -290,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
                     float conf = confs.get(idx);
 
 
-                    List<String> cocoNames = Arrays.asList("a person", "a bicycle", "a motorbike", "an airplane", "a bus", "a train", "a truck", "a boat", "a traffic light", "a fire hydrant", "a stop sign", "a parking meter", "a car", "a bench", "a bird", "a cat", "a dog", "a horse", "a sheep", "a cow", "an elephant", "a bear", "a zebra", "a giraffe", "a backpack", "an umbrella", "a handbag", "a tie", "a suitcase", "a frisbee", "skis", "a snowboard", "a sports ball", "a kite", "a baseball bat", "a baseball glove", "a skateboard", "a surfboard", "a tennis racket", "a bottle", "a wine glass", "a cup", "a fork", "a knife", "a spoon", "a bowl", "a banana", "an apple", "a sandwich", "an orange", "broccoli", "a carrot", "a hot dog", "a pizza", "a doughnut", "a cake", "a chair", "a sofa", "a potted plant", "a bed", "a dining table", "a toilet", "a TV monitor", "a laptop", "a computer mouse", "a remote control", "a keyboard", "a cell phone", "a microwave", "an oven", "a toaster", "a sink", "a refrigerator", "a book", "a clock", "a vase", "a pair of scissors", "a teddy bear", "a hair drier", "a toothbrush");
+                    List<String> cocoNames = Arrays.asList("a person", "a bicycle", "a car", "a motorbike", "a bus", "a train", "a truck", "a boat", "a traffic light", "a fire hydrant", "a stop sign", "a parking meter", "a car", "a bench", "a bird", "a cat", "a dog", "a horse", "a sheep", "a cow", "an elephant", "a bear", "a zebra", "a giraffe", "a backpack", "an umbrella", "a handbag", "a tie", "a suitcase", "a frisbee", "skis", "a snowboard", "a sports ball", "a kite", "a baseball bat", "a baseball glove", "a skateboard", "a surfboard", "a tennis racket", "a bottle", "a wine glass", "a cup", "a fork", "a knife", "a spoon", "a bowl", "a banana", "an apple", "a sandwich", "an orange", "broccoli", "a carrot", "a hot dog", "a pizza", "a doughnut", "a cake", "a chair", "a sofa", "a potted plant", "a bed", "a dining table", "a toilet", "a TV monitor", "a laptop", "a computer mouse", "a remote control", "a keyboard", "a cell phone", "a microwave", "an oven", "a toaster", "a sink", "a refrigerator", "a book", "a clock", "a vase", "a pair of scissors", "a teddy bear", "a hair drier", "a toothbrush");
 
 
 
@@ -314,15 +214,7 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
 
 
 
-
-
-
-
-
-        }
-
-
-        if (startFaces == true){
+        /*if (startFaces == true){
 
             Imgproc.cvtColor(frame, frame, Imgproc.COLOR_RGBA2RGB);
 
@@ -400,7 +292,7 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
 
 
 
-                } } }
+                } } }*/
 
 
 
@@ -409,13 +301,8 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
 
         return frame;
     }
-
-
     @Override
     public void onCameraViewStarted(int width, int height) {
-
-
-        if (startYolo == true){
 
             String tinyYoloCfg = Environment.getExternalStorageDirectory() + "/dnns/yolov3-tiny.cfg" ;
             String tinyYoloWeights = Environment.getExternalStorageDirectory() + "/dnns/yolov3-tiny.weights";
@@ -423,10 +310,9 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
             tinyYolo = Dnn.readNetFromDarknet(tinyYoloCfg, tinyYoloWeights);
 
 
-        }
 
 
-        if (startFaces == true){
+        /*if (startFaces == true){
 
             String protoPath = Environment.getExternalStorageDirectory() + "/dnns/deploy.prototxt" ;
             String caffeWeights = Environment.getExternalStorageDirectory() + "/dnns/res10_300x300_ssd_iter_140000.caffemodel";
@@ -434,7 +320,7 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
             detector = Dnn.readNetFromDarknet(protoPath, caffeWeights);
 
 
-        }
+        }*/
 
 
 

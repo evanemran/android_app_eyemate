@@ -22,6 +22,7 @@
         android:onClick="YOLO"
         android:text="Objects"
         android:layout_marginRight="20dp"
+        android:visibility="gone"
         android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -31,6 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="Faces"
+        android:gravity="center"
         android:text="Faces"
         android:layout_marginLeft="20dp"
         android:layout_marginBottom="20dp"
